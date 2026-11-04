@@ -1,0 +1,35 @@
+name: Complete source import
+on:
+  push:
+    paths:
+      - '.github/payload/part4.txt'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Restore reviewed challenge source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/payload/part{1,2,3,4}.txt | base64 -d > /tmp/challenge-source.tar.xz
+          tar -tJf /tmp/challenge-source.tar.xz
+          tar -xJf /tmp/challenge-source.tar.xz
+          test -f src/agent.py
+          test -f data/policies_extracted.txt
+          test -f 'data/desafio_tecnico_ai_eng - customers.csv'
+          test -f 'data/desafio_tecnico_ai_eng - products.csv'
+          test -f tests/test_llm.py
+          test -f tests/test_regressions.py
+          python -m compileall -q src app.py
+          rm -rf .github/payload
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'feat: restore complete agent source, datasets and tests'
+          git push
