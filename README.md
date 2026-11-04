@@ -6,13 +6,15 @@ Python technical case for **Artefact — AI Engineer**. A text assistant answers
 
 The existing OpenAI SDK is retained as a **client library** using Google's documented compatibility endpoint. In Gemini mode, requests and the Gemini key go to **Google**, not OpenAI. No OpenAI key or subscription is required.
 
-## Resumo executivo para avaliadores
+## Executive summary for reviewers
 
-Agente de atendimento em Python para a loja fictícia Empório da Música, utilizando dados fornecidos no desafio técnico da Artefact. Consultas a catálogo, pedidos e políticas são resolvidas por ferramentas dedicadas, e o modelo Gemini sintetiza respostas fundamentadas quando sua chave está configurada. A aplicação possui CLI interativo, testes automatizados e demonstração offline determinística. Não inclui interface web nem integrações com estoque em tempo real.
+This Python-based customer support agent was developed for the fictional Empório da Música store using the datasets supplied with Artefact's technical case. Dedicated tools retrieve product catalog entries, order information, and store policies. When configured with an API key, Google Gemini uses those tool results to compose grounded customer-facing answers in Brazilian Portuguese.
 
-**Fluxo:** mensagem do cliente → agente → ferramenta (`search_products`, `order_status` ou `search_policy`) → leitura/validação dos dados CSV/PDF → resposta em português.
+The implementation provides an interactive command-line interface, automated tests, and a deterministic offline demonstration. It does **not** include a web UI, live inventory integration, or production-grade customer authentication.
 
-Consulte [PUBLICACAO_GITHUB.md](PUBLICACAO_GITHUB.md) para o processo de envio ao GitHub.
+**Request flow:** customer message → agent → tool selection (`search_products`, `order_status`, or `search_policy`) → validation and retrieval from CSV/policy text → Brazilian Portuguese response.
+
+See [GitHub publication and verification](PUBLICACAO_GITHUB.md) for repository contents, setup instructions, and the verification status.
 
 ## Quick start
 
@@ -109,11 +111,11 @@ python -m unittest discover -s tests -v
 
 The suite covers exact model matching, short identifiers, monetary formats, valid and expired promotions, unavailable products, policy selection, multi-message order identification, rejected credentials, provider configuration, malformed tool arguments, API errors, iteration limits, history recovery and provider metadata preservation.
 
-Latest local validation: **61 tests passed**. The offline CLI was also exercised with multiple messages and `/limpar`.
+The supplied project documentation reports a previous local run with **61 tests passed**. This was not independently reproduced during the latest repository documentation update; see the [verification status](PUBLICACAO_GITHUB.md) for the checks performed in that session. The offline CLI was also exercised with multiple messages and `/limpar`.
 
 `tests/test_llm.py` uses the **real installed OpenAI SDK and HTTP serialization** against an in-memory `httpx.MockTransport`. Google responses are simulated. These tests verify the client protocol, routing and tool integration; they do **not** establish the real Gemini model's reasoning quality, credentials or quota.
 
-The five files in `examples/` are reproducible, actual offline runs. They cover budget filtering with decimal-dot notation, a seven-string instrument, active promotions, a refund-policy question and order verification across two messages. Regenerate them with:
+The five files in `examples/` document reproducible offline demonstrations. They cover budget filtering with decimal-dot notation, a seven-string instrument, active promotions, a refund-policy question and order verification across two messages. Regenerate them with:
 
 ```bash
 python scripts/generate_examples.py
