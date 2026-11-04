@@ -1,5 +1,7 @@
 # Empório da Música — AI Customer Support Agent
 
+> ⚠️ **Publicação em andamento:** este repositório ainda não contém todos os arquivos do pacote original, especialmente `src/agent.py`, dados e testes. **Não utilizar como entrega final até completar o envio e validar a execução.**
+
 > Desafio técnico de AI Engineer / Full-Stack para Aplicações com IA Generativa — Artefact.
 
 Assistente de atendimento em **Python** para uma loja fictícia de instrumentos musicais. O objetivo é responder a perguntas sobre o catálogo, pedidos e políticas comerciais com **Google Gemini e chamadas de ferramentas (function calling)**, usando arquivos locais fornecidos no desafio como fonte de dados.
