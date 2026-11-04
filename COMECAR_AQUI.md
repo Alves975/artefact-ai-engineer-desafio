@@ -1,20 +1,20 @@
-# Conversar com o Gemini
+# Getting Started with Google Gemini
 
-O projeto já está preparado para o **Gemini 3.1 Flash-Lite**, um modelo leve para conversas e consultas às ferramentas. Ele possui opção gratuita com limites de uso. A gratuidade depende do plano e da cota do projeto no Google; não é acesso ilimitado.
+This project supports **Gemini 3.1 Flash-Lite** for conversational responses and tool calling. Availability of a free tier depends on the Google project and current account quotas; free use is not unlimited.
 
-## 1. Criar a chave
+## 1. Create an API key
 
-1. Abra [Google AI Studio — chaves de API](https://aistudio.google.com/apikey).
-2. Entre na sua conta Google e aceite os termos, se solicitado.
-3. Use **Criar chave de API / Create API key**. Se já existir uma chave no projeto padrão, também pode usá-la. Se precisar, crie um projeto pelo próprio painel.
-4. Para experimentar a opção gratuita, mantenha um projeto no nível gratuito. Ativar faturamento não é necessário para o teste gratuito desse modelo.
-5. Copie a chave para o arquivo local descrito abaixo. **Não precisa enviar a chave pelo chat.**
+1. Open [Google AI Studio — API keys](https://aistudio.google.com/apikey).
+2. Sign in to a Google account and accept the applicable terms.
+3. Select **Create API key**, or use an existing key from a project with access to the configured model.
+4. To try the free tier, review the billing tier and quota of your Google project before making API requests.
+5. Keep the key on your local machine. **Do not paste an API key into a chat message, screenshot, or GitHub repository.**
 
-## 2. Instalar e configurar no computador
+## 2. Install and configure
 
-Extraia o ZIP e abra o terminal dentro da pasta `artefact_agent_project`, onde estão `app.py` e `requirements.txt`.
+Open a terminal in the repository directory, next to `app.py` and `requirements.txt`. Python 3.10 or later is required.
 
-No Windows PowerShell:
+**Windows PowerShell:**
 
 ```powershell
 python -m venv .venv
@@ -23,19 +23,19 @@ Copy-Item .env.example .env
 notepad .env
 ```
 
-Usar o executável da pasta `.venv` dispensa ativar scripts do PowerShell. Se `python` não for encontrado, tente `py` no primeiro comando ou instale o Python 3.10 ou superior.
+Using the virtual environment's Python executable avoids needing to activate PowerShell scripts. If `python` is not found, try the `py` launcher or install a supported Python version.
 
-No arquivo aberto, deixe estas linhas e cole sua chave depois de `GEMINI_API_KEY=`:
+In the new `.env` file, configure:
 
 ```dotenv
 AI_PROVIDER=gemini
-GEMINI_API_KEY=COLE_SUA_CHAVE_AQUI
+GEMINI_API_KEY=YOUR_API_KEY_HERE
 GEMINI_MODEL=gemini-3.1-flash-lite
 ```
 
-Salve o arquivo como **`.env`**, na mesma pasta de `app.py`. O nome não pode terminar em `.txt`. O arquivo de exemplo é apenas um modelo: a chave real deve ficar no `.env`.
+Save it as **`.env`** alongside `app.py`, not `.env.txt`. Only `.env.example`, which contains no real credentials, belongs in the repository.
 
-No macOS/Linux, a instalação equivalente é:
+**macOS/Linux:**
 
 ```bash
 python3 -m venv .venv
@@ -43,46 +43,52 @@ python3 -m venv .venv
 cp .env.example .env
 ```
 
-Edite `.env` com seu editor e preencha as mesmas três linhas.
+Edit `.env` using a local text editor and set the same variables.
 
-## 3. Testar a conexão e conversar
+## 3. Verify API access and start a conversation
 
-Windows:
+**Windows:**
 
 ```powershell
 .\.venv\Scripts\python.exe app.py --check-api
 .\.venv\Scripts\python.exe app.py
 ```
 
-macOS/Linux:
+**macOS/Linux:**
 
 ```bash
 .venv/bin/python app.py --check-api
 .venv/bin/python app.py
 ```
 
-O primeiro comando faz uma consulta real sobre os horários e verifica o caminho IA → ferramenta de políticas → resposta. O segundo abre a conversa.
+The first command performs a real request about store opening hours and checks the AI → policy retrieval tool → response path. The second launches the interactive customer support assistant.
 
-Experimente, em sequência:
+Try these sample customer questions in Brazilian Portuguese:
 
 1. `Quais violões vocês têm até R$ 500?`
 2. `E de 7 cordas, quais vocês têm?`
 3. `Quais produtos estão em promoção?`
 4. `Qual o prazo para reembolso?`
-5. `Qual o status do pedido 1?` — informe o e-mail correspondente ao cliente fictício quando o assistente pedir.
+5. `Qual o status do pedido 1?` — provide the corresponding fictional customer's email if requested.
 
-Use `/limpar` para começar uma nova conversa e `/sair` para encerrar.
+The conversation commands remain `/limpar` (reset chat history) and `/sair` (exit), because the assistant serves Brazilian customers.
 
-## Se aparecer um erro
+## Troubleshooting
 
-| Mensagem | O que fazer |
+| Symptom | Recommended action |
 | --- | --- |
-| Demonstração offline | Confira o nome `.env`, sua localização e a linha `GEMINI_API_KEY`. Feche e abra o programa novamente. |
-| A IA não autorizou o acesso | Confira se a chave foi copiada inteira e se o projeto tem permissão para usar a API Gemini. |
-| Modelo não disponível | Confira os modelos disponíveis para sua chave no AI Studio e ajuste `GEMINI_MODEL` para um modelo com opção gratuita. |
-| Limite de uso atingido | Confira a cota no painel e aguarde a liberação. Se a cota for zero, revise a disponibilidade do nível gratuito para o projeto/modelo. O programa não ativa cobrança nem troca de provedor. |
-| Falha de conexão | Confira a internet e tente novamente. A conversa anterior permanece preservada. |
+| Offline demonstration instead of Gemini | Check that `.env` is in the project root and `GEMINI_API_KEY` is configured, then restart the application. |
+| Authentication denied | Check that the complete API key was copied correctly and that the project can access the Gemini API. |
+| Model unavailable | Check the available models for your API key in Google AI Studio, and adjust `GEMINI_MODEL` if needed. |
+| Quota exceeded | Review account quotas, free-tier eligibility, and billing configuration. The application does not enable paid billing or switch providers automatically. |
+| Connection failure | Check your network connection and retry. The application is designed to retain earlier conversation state when a request fails. |
 
-Para testar sem chave nem internet, use `app.py --offline`. Esse modo é uma demonstração por regras; a conversa natural exige a chave do Gemini.
+To run without credentials or network access:
 
-Depois de testar, pode informar somente se funcionou ou copiar a mensagem de erro. Não inclua a chave em mensagens ou capturas de tela.
+```bash
+python app.py --offline
+```
+
+Offline mode is a deterministic demonstration rather than a generative conversation. Natural-language Gemini conversations require a valid key and network access.
+
+Never publish real keys or paste them into error reports.
