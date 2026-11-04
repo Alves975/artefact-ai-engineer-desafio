@@ -1,8 +1,12 @@
-# Publicação e validação do desafio Artefact
+# Publicação e validação — Desafio Artefact
 
-Repositório público de entrega técnica: https://github.com/Alves975/artefact-ai-engineer-desafio
+**Repositório:** https://github.com/Alves975/artefact-ai-engineer-desafio
 
-## Instalação
+O repositório está criado e os 26 arquivos de código, configuração, testes, exemplos e dados necessários à aplicação foram publicados. O PDF original `data/políticas_da_loja.pdf` **não foi incluído**: o agente utiliza `data/policies_extracted.txt`, que já está no repositório. Se a empresa exigir o PDF original, ele precisará ser anexado separadamente, após confirmar permissão para redistribuí-lo.
+
+## Executar localmente
+
+Requisitos: Python 3.10 ou superior.
 
 ```bash
 python -m venv .venv
@@ -11,14 +15,14 @@ python -m unittest discover -s tests -v
 python app.py --offline
 ```
 
-Para conectar ao Google Gemini, copie `.env.example` para `.env`, preencha `GEMINI_API_KEY` e execute `python app.py --check-api`.
+Para usar o Google Gemini, copie `.env.example` para `.env`, configure `GEMINI_API_KEY` e execute `python app.py --check-api`. A chave não deve ser enviada ao GitHub.
 
-## Segurança
+## Estado da validação
 
-Não publique `.env` real, credenciais, chaves ou dados privados. O arquivo `.env.example` contém apenas um modelo de configuração.
+- Compilação sintática com `python -m compileall -q app.py src tests scripts`: **aprovada** em 4 de novembro de 2026.
+- Demonstração offline usando o catálogo: **aprovada**.
+- 41 testes unitários e de regressão (sem o SDK externo): **aprovados**.
+- Testes completos com SDK OpenAI e serialização simulada: **não executados nesta sessão**. A dependência `openai` não estava instalada no ambiente e não havia acesso à rede para instalá-la.
+- Chamada externa real ao Gemini: **não verificada nesta sessão**; exige chave de API e acesso à rede.
 
-## Status de publicação
-
-O repositório foi inicialmente criado parcialmente. Antes de enviar para avaliação, confirme que `src/agent.py`, todos os CSVs de `data/`, o texto de políticas e todos os testes existem no GitHub. Os exemplos publicados descrevem execuções offline anteriores; eles não certificam que a versão parcial do repositório funciona.
-
-O PDF do enunciado original não precisa ser publicado. Consulte os direitos de distribuição dos dados do desafio.
+Esta documentação relata apenas validações efetivamente executadas. Não equipare a disponibilidade dos arquivos à aprovação dos testes completos.
